@@ -1,0 +1,75 @@
+	public void dbInsert() {
+		JsonData jData = new JsonData();
+		jData.setContent("111111");
+		jData.setEmail("111111@gmail.com");
+		jData.setId("1");
+		jData.setEmail("111111@gmail.com");
+		jData.setName("NO.1");
+		jData.setEnable(true);
+		
+		try {
+			db.save(jData);
+		} catch (DbException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
+	public void dbUpdate() {
+		JsonData jData = new JsonData();
+		jData.setContent("i modified the content");
+		
+		try {
+			db.update(jData, WhereBuilder.b("id", "=", "1"), "email");
+			//db.update(jData, WhereBuilder.b("id", "=", "1").and("email", "=", "111111@gmail.com"), "email");
+		} catch (DbException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
+	}
+
+	public void dbSelect() {
+		JsonData jData = new JsonData();
+		jData.setId("1");
+		
+		try {
+			JsonData test = db.findById(JsonData.class, jData.getId());
+			//JsonData test = db.findFirst(Selector.from(JsonData.class).where("id", "in", new int[]{1, 3, 6}));
+	        //JsonData test = db.findFirst(Selector.from(JsonData.class).where("id", "between", new String[]{"1", "5"}));
+//	    	List<JsonData> list = db.findAll(Selector.from(JsonData.class)
+//            .where("id","<",54)
+//            .and("age",">",30)
+//            .or("age","<",20)
+//            .orderBy("id")
+//            .limit(10)
+//            .offset(0));
+			
+			//查找表中的所有 name id email 字段
+			List<DbModel> dbModel =  db.findDbModelAll(Selector.from(JsonData.class).select("name","id","email"));
+			String temp = "group by result:" + dbModel.get(0).getDataMap() + "\n";
+			
+			
+		} catch (DbException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+        
+
+	}
+
+	public void dbDelete() {
+		
+		JsonData jdata = new JsonData();
+		jdata.setEmail("aaaaaaa@gamil.com");
+
+        try {
+			//db.deleteById(Parent.class,parent.getId());
+        	db.update(jdata, WhereBuilder.b("id", "=", "8"), "email");
+			//db.delete(JsonData.class, WhereBuilder.b("id", ">=", "3").and("email", "=", "wyouflf@gmail.com"));
+		} catch (DbException e) {
+			e.printStackTrace();
+		}
+
+	}
